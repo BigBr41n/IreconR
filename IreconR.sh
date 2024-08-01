@@ -53,6 +53,53 @@ run_nikto() {
 }
 
 
+# fuction to run WhatWeb for CMS detection
+run_whatweb() {
+    log "Running WhatWeb for CMS detection..."
+    while read subdomain; do
+        whatweb $subdomain -o whatweb_$subdomain.txt
+    done < alive_subdomains.txt
+}
+
+# Function to run WPScan for WordPress vulnerability scanning
+run_wpscan() {
+    log "Running WPScan for WordPress vulnerability scanning..."
+    while read subdomain; do
+        wpscan --url $subdomain --output wpscan_$subdomain.txt
+    done < alive_subdomains.txt
+}
+
+# Function to run Gobuster for directory brute-forcing
+run_gobuster() {
+    log "Running Gobuster for directory brute-forcing..."
+    while read subdomain; do
+        gobuster dir -u $subdomain -w /path/to/wordlist.txt -o gobuster_$subdomain.txt
+    done < alive_subdomains.txt
+}
+
+# Function to run dirsearch for directory and file brute-forcing
+run_dirsearch() {
+    log "Running Dirsearch for directory and file brute-forcing..."
+    while read subdomain; do
+        dirsearch -u $subdomain -w /path/to/wordlist.txt -o dirsearch_$subdomain.txt
+    done < alive_subdomains.txt
+}
+
+# Function to run ffuf for fuzzing
+run_ffuf() {
+    log "Running FFUF for fuzzing..."
+    while read subdomain; do
+        ffuf -u $subdomain/FUZZ -w /path/to/wordlist.txt -o ffuf_$subdomain.txt
+    done < alive_subdomains.txt
+}
+
+# Function to run Subjack for subdomain takeover detection
+run_subjack() {
+    log "Running Subjack for subdomain takeover detection..."
+    subjack -w alive_subdomains.txt -o subjack_results.txt -ssl
+}
+
+
 
 
 # Main function to run all tasks
@@ -73,6 +120,10 @@ main() {
     probe_subdomains
     run_nmap
     run_nikto
+    run_whatweb
+    run_wpscan
+    run_gobuster
+    run_dirsearch
 
     
 
