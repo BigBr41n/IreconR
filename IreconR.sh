@@ -36,6 +36,25 @@ probe_subdomains() {
 }
 
 
+# Function to run Nmap for network scanning
+run_nmap() {
+    log "Running Nmap for network scanning..."
+    while read subdomain; do
+        nmap -p- -T4 -A $subdomain -oN nmap_$subdomain.txt
+    done < alive_subdomains.txt
+}
+
+# Function to run Nikto for web vulnerability scanning
+run_nikto() {
+    log "Running Nikto for web vulnerability scanning..."
+    while read subdomain; do
+        nikto -h $subdomain -output nikto_$subdomain.txt
+    done < alive_subdomains.txt
+}
+
+
+
+
 # Main function to run all tasks
 main() {
     target_domain=$1
@@ -52,6 +71,10 @@ main() {
     run_subfinder
     combine_subdomains
     probe_subdomains
+    run_nmap
+    run_nikto
+
+    
 
     log "All tasks completed. Results are stored in the $target_domain/report directory."
 }
