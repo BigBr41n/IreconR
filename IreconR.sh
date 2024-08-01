@@ -100,6 +100,16 @@ run_subjack() {
 }
 
 
+# Function to create a report
+create_report() {
+    log "Creating a report..."
+    mkdir -p report
+    mv *_domains.txt alive_subdomains.txt *_subdomain.txt nmap_*.txt nikto_*.txt whatweb_*.txt wpscan_*.txt gobuster_*.txt dirsearch_*.txt ffuf_*.txt subjack_results.txt report/
+    log "Report created in the report directory."
+}
+
+
+
 
 
 # Main function to run all tasks
@@ -124,10 +134,13 @@ main() {
     run_wpscan
     run_gobuster
     run_dirsearch
+    run_ffuf
+    run_subjack
+    create_report
 
-    
 
-    log "All tasks completed. Results are stored in the $target_domain/report directory."
+
+    log "All tasks completed. Results are stored in the : $target_domain/report directory."
 }
 
 main $1
