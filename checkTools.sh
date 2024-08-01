@@ -1,10 +1,6 @@
 #!/bin/bash
 
 
-log() {
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
-}
-
 
 required_tools=(
     "amass"
@@ -21,13 +17,13 @@ required_tools=(
     "wpscan"
 )
 
-check if a tool is installed
+# check if a tool is installed
 check_tool() {
     command -v $1 &> /dev/null
     if [ $? -eq 0 ]; then
-        log "$1 is installed."
+       echo "$1 is installed."
     else
-        log "$1 is not installed."
+        echo -e "\033[0;31m$1 is not installed.\033[0m"
     fi
 }
 
