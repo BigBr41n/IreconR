@@ -1,7 +1,6 @@
 #!/bin/bash
 
 
-
 required_tools=(
     "amass"
     "sublist3r"
